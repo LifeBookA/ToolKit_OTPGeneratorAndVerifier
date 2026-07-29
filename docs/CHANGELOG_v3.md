@@ -1,10 +1,10 @@
-# Changelog - نسخه ۳.۰.۰
+# Changelog - نسخه ۳.۱.۰
 
-## 🎉 انتشار نسخه ۳.۰.۰ - رفع مشکلات و افزودن قابلیت‌های پیشرفته
+## 🎉 انتشار نسخه ۳.۱.۰ - افزودن قابلیت‌های پیشرفته و تکمیل ماژول‌ها
 
-**تاریخ انتشار:** ۲۰۲۴  
+**تاریخ انتشار:** ۲۰۲۶  
 **تعداد فایل‌های جدید:** ۷ فایل  
-**تعداد کل فایل‌ها:** ۳۸ فایل  
+**تعداد کل فایل‌ها:** ۴۵ فایل  
 
 ---
 
@@ -20,27 +20,6 @@ Autoloader قادر به بارگذاری کلاس‌های موجود در زی
 - پشتیبانی کامل از ساختار پوشه‌ای تو در تو
 - تبدیل صحیح namespace به مسیر فایل
 - جستجوی جایگزین برای کلاس‌های nested
-
-**کد جدید:**
-```php
-// تبدیل namespace به مسیر فایل
-$relativePath = str_replace('\\', DIRECTORY_SEPARATOR, $relativeClass);
-$file = $baseDir . $relativePath . '.php';
-
-// جستجوی جایگزین برای زیرپوشه‌ها
-$parts = explode(DIRECTORY_SEPARATOR, $relativePath);
-if (count($parts) > 1) {
-    $className = array_pop($parts);
-    $subDir = implode(DIRECTORY_SEPARATOR, $parts);
-    $altFile = $baseDir . $subDir . DIRECTORY_SEPARATOR . $className . '.php';
-}
-```
-
-### ۲. به‌روزرسانی Bootstrap
-**فایل:** `src/Bootstrap.php`
-
-- به‌روزرسانی شماره نسخه به `3.0.0`
-- اطمینان از ثبت صحیح تمام Namespaceها
 
 ---
 
@@ -72,13 +51,114 @@ Time: 4.01s
 
 ---
 
-## 📝 مستندات
+## 🚀 قابلیت‌های جدید نسخه ۳.۱.۰
 
-### فایل‌های مستندات جدید:
+### ۱. ژنراتورهای پیشرفته OTP
 
-| فایل | توضیحات |
-|------|---------|
-| `docs/CHANGELOG_v3.md` | لیست کامل تغییرات نسخه ۳ |
+#### TotpGenerator (RFC 6238)
+- تولید کد مبتنی بر زمان (TOTP)
+- پشتیبانی از پنجره خطا برای جبران اختلاف ساعت
+- سازگار با Google Authenticator و Authy
+
+#### ReadableOtpGenerator
+- تولید کدهای بدون حروف مبهم (بدون O, 0, I, 1, l)
+- مناسب برای خواندن شفاهی و تایپ دستی
+
+#### CustomCharsetGenerator
+- تولید کد با مجموعه کاراکتری دلخواه کاربر
+- انعطاف‌پذیری کامل برای نیازهای خاص
+
+### ۲. سیستم پشتیبان‌گیری (BackupHelper)
+- بک‌آپ‌گیری از تمام فایل‌های JSON ذخیره‌سازی
+- بازیابی داده‌ها از فایل بک‌آپ
+- فشرده‌سازی خودکار
+
+### ۳. آنالیتیکس و آمار (OtpAnalytics)
+- ردیابی تعداد کل تولیدها و تأییدها
+- شناسایی شناسه‌های مشکوک (تلاش ناموفق زیاد)
+- محاسبه نرخ موفقیت کلی
+- گزارش‌گیری از حملات احتمالی
+
+### ۴. کانال‌های اطلاع‌رسانی چندگانه
+
+#### EmailNotificationChannel
+- شبیه‌سازی ارسال ایمیل (ذخیره در فایل `.email`)
+- مناسب برای محیط توسعه
+
+#### SmsNotificationChannel
+- شبیه‌سازی ارسال پیامک (ذخیره در فایل `.sms`)
+- مناسب برای محیط توسعه
+
+#### WebhookNotificationChannel
+- ارسال واقعی HTTP POST به وب‌هوک
+- استفاده از cURL برای درخواست‌ها
+
+### ۵. کمک‌کننده QR Code (QrCodeHelper)
+- تولید رشته استاندارد `otpauth://` برای TOTP
+- سازگار با Google Authenticator
+- امکان استفاده در فرانت‌اند برای تولید تصویر QR
+
+---
+
+## 📁 ساختار نهایی پروژه
+
+```
+Toolkit/
+├── src/
+│   ├── Autoloader.php
+│   ├── Bootstrap.php
+│   └── Otp/
+│       ├── Config/OtpConfig.php
+│       ├── Contracts/OtpInterface.php
+│       ├── Exceptions/ (4 files)
+│       ├── Generator/
+│       │   ├── AlphaNumericOtpGenerator.php
+│       │   ├── CustomCharsetGenerator.php
+│       │   ├── NumericOtpGenerator.php
+│       │   ├── OtpGeneratorInterface.php
+│       │   ├── PatternOtpGenerator.php
+│       │   ├── ReadableOtpGenerator.php
+│       │   └── TotpGenerator.php
+│       ├── Helpers/
+│       │   ├── BackupHelper.php
+│       │   ├── OtpHelper.php
+│       │   └── QrCodeHelper.php
+│       ├── Logger/ (2 files)
+│       ├── Notification/ (5 files)
+│       ├── RateLimit/ (2 files)
+│       ├── Result/OtpVerificationResult.php
+│       ├── Storage/
+│       │   ├── Database/ (2 files)
+│       │   ├── FileOtpStorage.php
+│       │   ├── OtpStorageInterface.php
+│       │   └── Redis/ (2 files)
+│       ├── Verifier/ (2 files)
+│       ├── Analytics/OtpAnalytics.php
+│       ├── EnhancedOtpManager.php
+│       └── OtpManager.php
+├── tests/
+│   ├── TestCase.php
+│   ├── GeneratorTests.php
+│   ├── StorageTests.php
+│   ├── VerifierTests.php
+│   └── run_tests.php
+├── examples/
+│   └── otp_demo.php
+├── docs/
+│   ├── CHANGELOG_v2.md
+│   ├── CHANGELOG_v3.md
+│   └── otp.md
+└── README.md
+```
+
+---
+
+## 📊 آمار نسخه ۳.۱.۰
+
+- **تعداد کل فایل‌های PHP:** ۴۵ فایل
+- **تعداد تست‌های واحد:** ۲۲ تست
+- **خطوط کد PHP:** حدود ۵,۵۰۰ خط
+- **پوشش تست:** ژنراتورها، ذخیره‌سازی، وریفایر
 
 ---
 
@@ -88,53 +168,9 @@ Time: 4.01s
 
 ---
 
-## 🚀 نحوه اجرای تست‌ها
-
-```bash
-# اجرای تمام تست‌ها
-php tests/run_tests.php
-
-# خروجی مورد انتظار:
-# ============================================================
-# 🧪 Running Toolkit OTP Unit Tests...
-# ============================================================
-# 
-# === Generator Tests ===
-# ✅ NumericOtpGenerator::testGenerateValidCode
-# ...
-# 
-# ============================================================
-# ✅ All tests passed! (22/22)
-# Time: 4.01s
-# ============================================================
-```
-
----
-
-## 📊 آمار نسخه ۳.۰.۰
-
-- **تعداد کل فایل‌های PHP:** ۳۸ فایل
-- **تعداد تست‌های واحد:** ۲۲ تست
-- **خطوط کد PHP:** حدود ۴,۵۰۰ خط
-- **پوشش تست:** ژنراتورها، ذخیره‌سازی، وریفایر
-
----
-
 ## 🙏 تشکر
 
-از تمام_contributorهایی که در توسعه این نسخه مشارکت کردند سپاسگزاریم.
-
----
-
-## 📌 نسخه بعدی (۴.۰.۰ - پیشنهادی)
-
-قابلیت‌های پیشنهادی برای نسخه بعدی:
-- [ ] کانال‌های اطلاع‌رسانی بیشتر (Email, SMS, Webhook)
-- [ ] ژنراتورهای سفارشی (Readable, CustomCharset)
-- [ ] سیستم آنالیتیکس و آمار
-- [ ] پشتیبانی از TOTP (Time-based OTP)
-- [ ] تولید QR Code برای احراز هویت
-- [ ] سیستم پشتیبان‌گیری
+از تمام contributorهایی که در توسعه این نسخه مشارکت کردند سپاسگزاریم.
 
 ---
 
