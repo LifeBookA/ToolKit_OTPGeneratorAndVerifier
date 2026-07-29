@@ -1,15 +1,15 @@
 <?php
 
+namespace Toolkit\Tests;
+
 /**
  * Base Test Case for Toolkit OTP Unit Tests
  * 
  * Provides common assertion methods and test utilities.
  * 
  * @package Toolkit\Tests
- * @version 3.0.0
+ * @version 3.0.1
  */
-
-namespace Toolkit\Tests;
 
 abstract class TestCase
 {

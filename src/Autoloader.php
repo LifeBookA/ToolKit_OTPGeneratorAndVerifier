@@ -7,7 +7,7 @@
  * Supports deep nested directories and sub-namespaces.
  * 
  * @package Toolkit
- * @version 3.0.0
+ * @version 3.0.1
  */
 
 namespace Toolkit;

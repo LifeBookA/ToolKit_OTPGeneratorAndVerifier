@@ -6,11 +6,13 @@
  * Runs all test suites and provides a summary report.
  * 
  * @package Toolkit\Tests
- * @version 3.0.0
+ * @version 3.0.1
  */
 
-namespace Toolkit\Tests;
+// Load Bootstrap first to register autoloader
+require_once __DIR__ . '/../src/Bootstrap.php';
 
+// Now load test classes (they will be autoloaded or loaded directly)
 require_once __DIR__ . '/TestCase.php';
 
 echo "\n";
@@ -30,7 +32,7 @@ $endTime = microtime(true);
 $duration = round($endTime - $startTime, 2);
 
 // Get final statistics
-$stats = TestCase::getStats();
+$stats = \Toolkit\Tests\TestCase::getStats();
 
 echo "\n";
 echo "============================================================\n";
