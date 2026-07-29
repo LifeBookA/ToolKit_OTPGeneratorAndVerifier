@@ -6,7 +6,7 @@
  * Initializes the autoloader and registers all namespaces.
  * 
  * @package Toolkit
- * @version 1.0.0
+ * @version 3.0.0
  */
 
 namespace Toolkit;
@@ -48,7 +48,7 @@ class Bootstrap
      */
     public static function getVersion(): string
     {
-        return '1.0.0';
+        return '3.0.0';
     }
 }
 
