@@ -6,7 +6,7 @@
  * Initializes the autoloader and registers all namespaces.
  * 
  * @package Toolkit
- * @version 3.0.0
+ * @version 3.0.2
  */
 
 namespace Toolkit;

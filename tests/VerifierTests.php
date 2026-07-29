@@ -1,15 +1,16 @@
 <?php
 
+namespace Toolkit\Tests;
+
 /**
  * Unit Tests for OTP Verifier
  * 
  * @package Toolkit\Tests
- * @version 3.0.0
+ * @version 3.0.2
  */
 
-namespace Toolkit\Tests;
-
 require_once __DIR__ . '/../src/Bootstrap.php';
+require_once __DIR__ . '/TestCase.php';
 
 use Toolkit\Otp\OtpManager;
 use Toolkit\Otp\Storage\FileOtpStorage;
